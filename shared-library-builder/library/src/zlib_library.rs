@@ -14,7 +14,7 @@ impl ZLibLibrary {
                 LibraryLocation::Git(GitLocation::github("madler", "zlib").tag(version)),
             )
             .with_exported_name("z")
-            .compiled_name(CompiledLibraryName::Matching("libz".to_string()))
+            .compiled_name(CompiledLibraryName::Matching("z".to_string()))
             .define_static("BUILD_SHARED_LIBS", "OFF")
             .define_shared("BUILD_SHARED_LIBS", "ON")
             .delete(FileNamed::any_named(vec![

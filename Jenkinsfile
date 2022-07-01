@@ -5,6 +5,7 @@ import hudson.tasks.junit.CaseResult
 pipeline {
     agent none
     parameters {
+        booleanParam(name: 'BUILD', defaultValue: false, description: 'Set to true to run a new build')
         booleanParam(name: 'RELEASE', defaultValue: false, description: 'Set to true to release a new version')
         choice(name: 'BUMP', choices: ['minor', 'patch', 'major'], description: 'What to bump when releasing') }
     options {
@@ -46,7 +47,7 @@ pipeline {
         stage ('Parallel build') {
             when {
                 expression {
-                    (currentBuild.result == null || currentBuild.result == 'SUCCESS') && env.BRANCH_NAME.toString().equals('main')
+                    (currentBuild.result == null || currentBuild.result == 'SUCCESS') && env.BRANCH_NAME.toString().equals('main') && params.BUILD
                 }
             }
             parallel {
@@ -147,7 +148,7 @@ pipeline {
             }
             when {
                 expression {
-                    (currentBuild.result == null || currentBuild.result == 'SUCCESS') && env.BRANCH_NAME.toString().equals('main') && params.RELEASE
+                    (currentBuild.result == null || currentBuild.result == 'SUCCESS') && env.BRANCH_NAME.toString().equals('main') && params.BUILD && params.RELEASE
                 }
             }
             steps {
